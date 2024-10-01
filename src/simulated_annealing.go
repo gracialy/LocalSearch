@@ -8,11 +8,12 @@ import (
 )
 
 const (
-	TMAX = 1000000000
+	TMAX = 1000000
 )
 
 type SimulatedAnnealing struct {
 	Stochastic
+	ActualIteration int
 }
 
 func NewSimulatedAnnealing(cube *Cube) *SimulatedAnnealing {
@@ -21,6 +22,8 @@ func NewSimulatedAnnealing(cube *Cube) *SimulatedAnnealing {
 	sa := &SimulatedAnnealing{
 		Stochastic: st,
 	}
+
+	sa.ActualIteration = 0
 
 	return sa
 }
@@ -41,6 +44,10 @@ func (sa *SimulatedAnnealing) GetRuntime() time.Duration {
 	return sa.Stochastic.GetRuntime()
 }
 
+func (sa *SimulatedAnnealing) GetActualIteration() int {
+	return sa.ActualIteration
+}
+
 func (sa *SimulatedAnnealing) SetValue() {
 	sa.Stochastic.SetValue()
 }
@@ -58,6 +65,8 @@ func (sa *SimulatedAnnealing) Copy(original *SimulatedAnnealing) {
 }
 
 func (sa *SimulatedAnnealing) Run() {
+	fmt.Printf("Simulated Annealing Algorithm\n")
+	sa.ActualIteration = 0
 	timeStart := time.Now()
 
 	current := sa
@@ -68,16 +77,17 @@ func (sa *SimulatedAnnealing) Run() {
 		if T == 0 {
 			break
 		}
+		sa.ActualIteration++
 		next.Copy(current)
 		next.Random()
 		delta := float64(next.Cube.Value - current.Cube.Value)
 		if delta > 0 {
 			current = next
 		} else {
-			prob := math.Exp(-delta / T)
+			prob := sa.Boltzmann(delta, T)
 			random := rand.Float64()
 			if prob > random {
-				fmt.Printf("Probability: %f Random: %f\n", prob, random)
+				// fmt.Printf("t: %d delta: %f T: %f Probability: %f Random: %f \n", t, delta, T, prob, random)
 				current.Copy(next)
 			}
 		}
@@ -88,4 +98,8 @@ func (sa *SimulatedAnnealing) Run() {
 
 func (sa *SimulatedAnnealing) schedule(t int) float64 {
 	return 1.0 / math.Log(float64(t)+1)
+}
+
+func (sa *SimulatedAnnealing) Boltzmann(delta float64, T float64) float64 {
+	return math.Exp(delta / T)
 }

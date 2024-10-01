@@ -11,7 +11,7 @@ const (
 
 type Stochastic struct {
 	Cube
-	runtime time.Duration
+	Runtime time.Duration
 }
 
 func NewStochastic(cube *Cube) *Stochastic {
@@ -19,7 +19,7 @@ func NewStochastic(cube *Cube) *Stochastic {
 		Cube: *cube,
 	}
 
-	st.runtime = 0
+	st.Runtime = 0
 
 	return st
 }
@@ -33,7 +33,7 @@ func (st *Stochastic) GetValue() uint8 {
 }
 
 func (st *Stochastic) GetRuntime() time.Duration {
-	return st.runtime
+	return st.Runtime
 }
 
 func (st *Stochastic) GetCube() *Cube {
@@ -45,7 +45,7 @@ func (st *Stochastic) SetValue() {
 }
 
 func (st *Stochastic) SetRuntime(runtime time.Duration) {
-	st.runtime = runtime
+	st.Runtime = runtime
 }
 
 func (st *Stochastic) Clone() *Stochastic {
@@ -54,6 +54,7 @@ func (st *Stochastic) Clone() *Stochastic {
 
 func (st *Stochastic) Copy(original *Stochastic) {
 	st.Cube.Copy(original.GetCube())
+	st.Runtime = original.GetRuntime()
 }
 
 func (st *Stochastic) PrintConfiguration() {
