@@ -6,11 +6,12 @@ import (
 )
 
 const (
-	NMAX = 5000000
+	NMAX = 1000000
 )
 
 type Stochastic struct {
 	Cube
+	runtime time.Duration
 }
 
 func NewStochastic(cube *Cube) *Stochastic {
@@ -18,20 +19,63 @@ func NewStochastic(cube *Cube) *Stochastic {
 		Cube: *cube,
 	}
 
+	st.runtime = 0
+
 	return st
 }
 
+func (st *Stochastic) GetConfiguration() [DIMENSION][DIMENSION][DIMENSION]uint8 {
+	return st.Cube.GetConfiguration()
+}
+
+func (st *Stochastic) GetValue() uint8 {
+	return st.Cube.GetValue()
+}
+
+func (st *Stochastic) GetRuntime() time.Duration {
+	return st.runtime
+}
+
+func (st *Stochastic) GetCube() *Cube {
+	return &st.Cube
+}
+
+func (st *Stochastic) SetValue() {
+	st.Cube.SetValue()
+}
+
+func (st *Stochastic) SetRuntime(runtime time.Duration) {
+	st.runtime = runtime
+}
+
+func (st *Stochastic) Clone() *Stochastic {
+	return &Stochastic{Cube: *st.Cube.Clone()}
+}
+
+func (st *Stochastic) Copy(original *Stochastic) {
+	st.Cube.Copy(original.GetCube())
+}
+
+func (st *Stochastic) PrintConfiguration() {
+	st.Cube.PrintConfiguration()
+}
+
 func (st *Stochastic) Run() {
-	current := &Stochastic{Cube: *st.Cube.Copy()}
+	timeStart := time.Now()
+
+	current := st
+	neighbor := current.Clone()
 
 	for i := 0; i < NMAX; i++ {
-		neighbor := &Stochastic{Cube: *current.Cube.Copy()}
+		neighbor.Copy(current)
 		neighbor.Random()
-		if neighbor.Cube.Value > current.Cube.Value {
-			current = neighbor
+		// fmt.Printf("Neighbor Value: %d, Current Value: %d\n", neighbor.GetValue(), current.GetValue())
+		if neighbor.GetValue() > current.GetValue() {
+			current.Copy(neighbor)
 		}
 	}
-	st.Cube = current.Cube
+
+	st.SetRuntime(time.Since(timeStart))
 }
 
 func (st *Stochastic) Random() {
@@ -48,6 +92,4 @@ func (st *Stochastic) Random() {
 	}
 
 	st.Swap(x1, y1, z1, x2, y2, z2)
-
-	st.Cube.EvalValue()
 }
