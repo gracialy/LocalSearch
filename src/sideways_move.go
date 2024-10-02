@@ -47,7 +47,7 @@ func (sm *SidewaysMove) SetValue() {
 }
 
 func (sm *SidewaysMove) SetRuntime(runtime time.Duration) {
-	sm.Runtime = runtime
+	sm.SteepestAscent.SetRuntime(runtime)
 }
 
 func (sm *SidewaysMove) Clone() *SidewaysMove {
