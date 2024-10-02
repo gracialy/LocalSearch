@@ -1,14 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"math"
 	"math/rand"
 	"time"
-)
-
-const (
-	TMAX = 1000000
 )
 
 type SimulatedAnnealing struct {
@@ -32,8 +27,16 @@ func (sa *SimulatedAnnealing) GetConfiguration() [DIMENSION][DIMENSION][DIMENSIO
 	return sa.Stochastic.GetConfiguration()
 }
 
-func (sa *SimulatedAnnealing) GetValue() uint8 {
+func (sa *SimulatedAnnealing) GetValue() int {
 	return sa.Stochastic.GetValue()
+}
+
+func (sa *SimulatedAnnealing) GetValue1() int {
+	return sa.Stochastic.GetValue1()
+}
+
+func (sa *SimulatedAnnealing) GetValue2() int {
+	return sa.Stochastic.GetValue2()
 }
 
 func (sa *SimulatedAnnealing) GetCube() *Cube {
@@ -65,14 +68,16 @@ func (sa *SimulatedAnnealing) Copy(original *SimulatedAnnealing) {
 }
 
 func (sa *SimulatedAnnealing) Run() {
-	fmt.Printf("Simulated Annealing Algorithm\n")
 	sa.ActualIteration = 0
 	timeStart := time.Now()
 
 	current := sa
 	next := current.Clone()
 
-	for t := 1; t < TMAX; t++ {
+	t := 0
+	// for {
+	for i := 0; i < NMAX; i++ {
+		t++
 		T := sa.schedule(t)
 		if T == 0 {
 			break

@@ -28,8 +28,16 @@ func (st *Stochastic) GetConfiguration() [DIMENSION][DIMENSION][DIMENSION]uint8 
 	return st.Cube.GetConfiguration()
 }
 
-func (st *Stochastic) GetValue() uint8 {
+func (st *Stochastic) GetValue() int {
 	return st.Cube.GetValue()
+}
+
+func (st *Stochastic) GetValue1() int {
+	return st.Cube.GetValue1()
+}
+
+func (st *Stochastic) GetValue2() int {
+	return st.Cube.GetValue2()
 }
 
 func (st *Stochastic) GetRuntime() time.Duration {
@@ -57,8 +65,8 @@ func (st *Stochastic) Copy(original *Stochastic) {
 	st.Runtime = original.GetRuntime()
 }
 
-func (st *Stochastic) PrintConfiguration() {
-	st.Cube.PrintConfiguration()
+func (st *Stochastic) PrintSideways() {
+	st.Cube.PrintSideways()
 }
 
 func (st *Stochastic) Run() {
@@ -71,7 +79,7 @@ func (st *Stochastic) Run() {
 		neighbor.Copy(current)
 		neighbor.Random()
 		// fmt.Printf("Neighbor Value: %d, Current Value: %d\n", neighbor.GetValue(), current.GetValue())
-		if neighbor.GetValue() > current.GetValue() {
+		if neighbor.GetValue() < current.GetValue() {
 			current.Copy(neighbor)
 		}
 	}
