@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -68,11 +67,11 @@ func (sta *SteepestAscent) PrintSideways() {
 func (sta *SteepestAscent) Run() {
 	start := time.Now()
 
-	current := sta.Clone()
+	current := sta
 
 	for {
 		neighbor := sta.FindBestNeighbor()
-		if neighbor.GetValue() > current.GetValue() {
+		if neighbor.GetValue() < current.GetValue() {
 			current.Copy(neighbor)
 		} else {
 			break
@@ -84,15 +83,16 @@ func (sta *SteepestAscent) Run() {
 
 func (sta *SteepestAscent) FindBestNeighbor() *SteepestAscent {
 	flat := sta.flatten()
-	best := sta
+	unflat := sta.Clone()
+	best := sta.Clone()
 
 	for i := 0; i < ELEMENT-1; i++ {
 		for j := i + 1; j < ELEMENT; j++ {
 			flat[i], flat[j] = flat[j], flat[i]
 
-			if sta.unflatten(flat).GetValue() > sta.GetValue() {
-				best = sta.unflatten(flat)
-				fmt.Printf("Best Neighbor: %d\n", best.GetValue())
+			unflat.unflatten(flat)
+			if unflat.GetValue() < best.GetValue() {
+				best.Copy(unflat)
 			}
 
 			flat[i], flat[j] = flat[j], flat[i]
@@ -106,7 +106,6 @@ func (sta *SteepestAscent) flatten() []uint8 {
 	return sta.Cube.flatten()
 }
 
-func (sta *SteepestAscent) unflatten(flat []uint8) *SteepestAscent {
-	cube := sta.Cube.unflatten(flat)
-	return &SteepestAscent{Cube: *cube}
+func (sta *SteepestAscent) unflatten(flat []uint8) {
+	sta.Cube.unflatten(flat)
 }

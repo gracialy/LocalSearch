@@ -266,6 +266,8 @@ func (c *Cube) Clone() *Cube {
 	newCube := &Cube{
 		Dimension: c.Dimension,
 		Value:     c.Value,
+		Value1:    c.Value1,
+		Value2:    c.Value2,
 	}
 
 	for i := uint8(0); i < c.Dimension; i++ {
@@ -299,7 +301,7 @@ func (c *Cube) flatten() []uint8 {
 	return flat
 }
 
-func (c *Cube) unflatten(flat []uint8) *Cube {
+func (c *Cube) unflatten(flat []uint8) {
 	idx := 0
 	for i := uint8(0); i < c.Dimension; i++ {
 		for j := uint8(0); j < c.Dimension; j++ {
@@ -311,6 +313,4 @@ func (c *Cube) unflatten(flat []uint8) *Cube {
 	}
 
 	c.SetValue()
-
-	return c
 }
