@@ -1,5 +1,7 @@
 # LocalSearch
 
+## Capture
+![alt text](image.png)
 
 ## Description
 Implementation of Local Search to solve **diagonal magic cube of 5\*5\*5 dimension** using OOP-like paradigm.
