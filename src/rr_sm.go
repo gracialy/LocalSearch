@@ -72,6 +72,10 @@ func (rr_sm *RR_sm) Run() {
 		}
 		// fmt.Printf("Random Restart (StA) #%d\n", r+1)
 		rr_sm.SidewaysMove.Run()
+
+		if rr_sm.SidewaysMove.GetValue() == 0 {
+			break
+		}
 	}
 
 	rr_sm.SidewaysMove.SetRuntime(time.Since(start))

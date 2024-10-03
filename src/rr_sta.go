@@ -78,6 +78,10 @@ func (rr_sta *RR_sta) Run() {
 		}
 		// fmt.Printf("Random Restart (StA) #%d\n", r+1)
 		rr_sta.SteepestAscent.Run()
+
+		if rr_sta.SteepestAscent.GetValue() == 0 {
+			break
+		}
 	}
 
 	rr_sta.SteepestAscent.Runtime = time.Since(start)
