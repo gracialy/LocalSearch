@@ -6,9 +6,16 @@ import (
 	"time"
 )
 
+const (
+	SAMAX = 1000000
+	TINIT = 1000.0
+	BETA  = 0.833
+)
+
 type SimulatedAnnealing struct {
 	Stochastic
 	ActualIteration int
+	T               float64
 }
 
 func NewSimulatedAnnealing(cube *Cube) *SimulatedAnnealing {
@@ -19,6 +26,7 @@ func NewSimulatedAnnealing(cube *Cube) *SimulatedAnnealing {
 	}
 
 	sa.ActualIteration = 0
+	sa.T = TINIT
 
 	return sa
 }
@@ -76,23 +84,23 @@ func (sa *SimulatedAnnealing) Run() {
 
 	t := 0
 	// for {
-	for i := 0; i < NMAX; i++ {
+	for i := 0; i < SAMAX; i++ {
 		t++
-		T := sa.schedule(t)
-		if T == 0 {
+		sa.schedule(t)
+		if sa.T == 0 {
 			break
 		}
 		sa.ActualIteration++
 		next.Copy(current)
 		next.Random()
 		delta := float64(next.Cube.Value - current.Cube.Value)
-		if delta > 0 {
-			current = next
+		if delta < 0 {
+			current.Copy(next)
 		} else {
-			prob := sa.Boltzmann(delta, T)
-			random := rand.Float64()
-			if prob > random {
-				// fmt.Printf("t: %d delta: %f T: %f Probability: %f Random: %f \n", t, delta, T, prob, random)
+			prob := sa.Boltzmann(delta)
+			random := float64(randRange(0, 101)) / 100.0
+			// fmt.Printf("t: %d delta: %f T: %e Probability: %f Random: %f Value: %d\n", t, delta, sa.T, prob, random, next.GetValue())
+			if prob < random {
 				current.Copy(next)
 			}
 		}
@@ -101,10 +109,14 @@ func (sa *SimulatedAnnealing) Run() {
 	sa.SetRuntime(time.Since(timeStart))
 }
 
-func (sa *SimulatedAnnealing) schedule(t int) float64 {
-	return 1.0 / math.Log(float64(t)+1)
+func (sa *SimulatedAnnealing) schedule(t int) {
+	sa.T = 1 / (BETA*math.Log(float64(t)+1) + TINIT)
 }
 
-func (sa *SimulatedAnnealing) Boltzmann(delta float64, T float64) float64 {
-	return math.Exp(delta / T)
+func (sa *SimulatedAnnealing) Boltzmann(delta float64) float64 {
+	return math.Exp(delta / sa.T)
+}
+
+func randRange(min, max int) int {
+	return rand.Intn(max-min) + min
 }

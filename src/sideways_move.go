@@ -66,13 +66,21 @@ func (sm *SidewaysMove) Run() {
 	start := time.Now()
 
 	current := sm
+	stuck := 0
 
 	for {
 		neighbor := sm.FindBestNeighbor()
-		if neighbor.GetValue() < current.GetValue() {
-			current.Copy(neighbor)
-			// fmt.Printf("Current: %d\n", current.GetValue())
+		if neighbor.GetValue() > current.GetValue() {
+			break
+		} else if neighbor.GetValue() == current.GetValue() {
+			stuck++
 		} else {
+			stuck = 0
+		}
+
+		current.Copy(neighbor)
+
+		if stuck == 100 {
 			break
 		}
 	}

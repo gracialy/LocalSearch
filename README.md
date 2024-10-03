@@ -8,9 +8,8 @@ The implemented algorithm are:
 - Steepest Ascent Hill-climbing
 - Hill-climbing with Sideways Move
 - Random Restart Hill-climbing, using
-
-        - Steepest Ascent Hill-climbing
-        - Hill-climbing with Sideways Move
+        Steepest Ascent Hill-climbing
+        Hill-climbing with Sideways Move
 
 - Stochastic Hill-climbing
 - Simulated Annealing
@@ -19,3 +18,5 @@ The implemented algorithm are:
 Course: IF3070 Foundation of Artificial Intelligence
 
 ## Build
+1. cd /src
+2. ./localsearch
