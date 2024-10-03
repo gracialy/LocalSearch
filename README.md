@@ -7,9 +7,7 @@ Implementation of Local Search to solve **diagonal magic cube of 5\*5\*5 dimensi
 The implemented algorithm are:
 - Steepest Ascent Hill-climbing
 - Hill-climbing with Sideways Move
-- Random Restart Hill-climbing, using
-        Steepest Ascent Hill-climbing
-        Hill-climbing with Sideways Move
+- Random Restart Hill-climbing, using Steepest Ascent Hill-climbing and Hill-climbing with Sideways Move
 
 - Stochastic Hill-climbing
 - Simulated Annealing
