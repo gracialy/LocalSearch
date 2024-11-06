@@ -236,17 +236,40 @@ func (c *Cube) PrintSideways() {
 	}
 }
 
-// Print the cube configuration
-func (c *Cube) PrintConfiguration() {
-	for i := uint8(0); i < c.Dimension; i++ {
-		for j := uint8(0); j < c.Dimension; j++ {
-			for k := uint8(0); k < c.Dimension; k++ {
-				fmt.Printf("%d ", c.Configuration[i][j][k])
+func (c *Cube) FindBestNeighbor() *Cube {
+	flat := c.flatten()
+	unflat := c.Clone()
+	best := c.Clone()
+
+	for i := 0; i < ELEMENT-1; i++ {
+		for j := i + 1; j < ELEMENT; j++ {
+			flat[i], flat[j] = flat[j], flat[i]
+
+			unflat.unflatten(flat)
+			if unflat.Value < best.Value {
+				best.Copy(unflat)
 			}
-			fmt.Println()
+
+			flat[i], flat[j] = flat[j], flat[i]
 		}
-		fmt.Println()
 	}
+
+	return best
+}
+
+func (c *Cube) FindRandomNeighbor() {
+	x1 := uint8(rand.Intn(5))
+	y1 := uint8(rand.Intn(5))
+	z1 := uint8(rand.Intn(5))
+	x2, y2, z2 := x1, y1, z1
+
+	for x1 == x2 && y1 == y2 && z1 == z2 {
+		x2 = uint8(rand.Intn(5))
+		y2 = uint8(rand.Intn(5))
+		z2 = uint8(rand.Intn(5))
+	}
+
+	c.Swap(x1, y1, z1, x2, y2, z2)
 }
 
 func (c *Cube) Copy(original *Cube) {
@@ -311,6 +334,18 @@ func (c *Cube) unflatten(flat []uint8) {
 			}
 		}
 	}
-
 	c.SetValue()
+}
+
+func IsSame(c1 *Cube, c2 *Cube) bool {
+	for i := uint8(0); i < c1.Dimension; i++ {
+		for j := uint8(0); j < c1.Dimension; j++ {
+			for k := uint8(0); k < c1.Dimension; k++ {
+				if c1.Configuration[i][j][k] != c2.Configuration[i][j][k] {
+					return false
+				}
+			}
+		}
+	}
+	return true
 }
