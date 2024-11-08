@@ -10,6 +10,11 @@ import (
 	"gonum.org/v1/plot/vg"
 )
 
+const (
+	CAP_DUMP = 10000
+	CAP_PLOT = 10000
+)
+
 type Experiment struct {
 	State   []Cube
 	Runtime time.Duration
@@ -29,13 +34,17 @@ func (e *Experiment) Dump(name string) {
 	}
 	defer file.Close()
 
-	for _, cube := range e.State {
-		flattened := cube.flatten()
+	limit := CAP_DUMP
+	if len(e.State) < CAP_DUMP {
+		limit = len(e.State)
+	}
+
+	for i := 0; i < limit; i++ {
+		flattened := e.State[i].flatten()
 		flatString := ""
-		for i := 0; i < len(flattened); i++ {
-			flatString += fmt.Sprintf("%v ", flattened[i])
+		for j := 0; j < len(flattened); j++ {
+			flatString += fmt.Sprintf("%v ", flattened[j])
 		}
-		fmt.Println(flatString)
 
 		_, err := file.WriteString(flatString + "\n")
 		if err != nil {
@@ -48,6 +57,7 @@ func (e *Experiment) Plot(name string) {
 	p := plot.New()
 
 	text := "Plot " + name
+	text += fmt.Sprintf("\nIteration: %v", len(e.State))
 	text += fmt.Sprintf("\nFinal State Objective Value: %v", e.State[len(e.State)-1].Value)
 	text += fmt.Sprintf("\nRuntime: %v", e.GetRuntime())
 	p.Title.Text = text
@@ -55,7 +65,12 @@ func (e *Experiment) Plot(name string) {
 	p.Y.Label.Text = "Objective Function"
 	p.Add(plotter.NewGrid())
 
-	pts := make(plotter.XYs, len(e.State))
+	limit := CAP_DUMP
+	if len(e.State) < CAP_DUMP {
+		limit = len(e.State)
+	}
+
+	pts := make(plotter.XYs, limit)
 
 	for i, cube := range e.State {
 		pts[i].X = float64(i)
@@ -68,7 +83,9 @@ func (e *Experiment) Plot(name string) {
 	}
 	p.Add(line)
 
-	if err := p.Save(8*vg.Inch, 8*vg.Inch, "img/"+text+".png"); err != nil {
+	fileName := "img/" + name + ".png"
+
+	if err := p.Save(8*vg.Inch, 8*vg.Inch, fileName); err != nil {
 		panic(err)
 	}
 }
