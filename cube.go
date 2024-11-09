@@ -28,26 +28,6 @@ func NewCube() *Cube {
 	return cube
 }
 
-func (c *Cube) GetDimension() uint8 {
-	return c.Dimension
-}
-
-func (c *Cube) GetValue() int {
-	return c.Value
-}
-
-func (c *Cube) GetValue1() int {
-	return c.Value1
-}
-
-func (c *Cube) GetValue2() int {
-	return c.Value2
-}
-
-func (c *Cube) GetConfiguration() [DIMENSION][DIMENSION][DIMENSION]uint8 {
-	return c.Configuration
-}
-
 // Objective function for the cube
 func (c *Cube) evalValue(value *int) {
 	if (*value) != MAGIC_NUMBER {
@@ -209,19 +189,19 @@ func (c *Cube) SetValue() {
 // Generate random initial configuration for the cube
 func (c *Cube) Random() {
 	// Create a slice with values 1 to 125
-	values := make([]uint8, 125)
-	for i := range values {
-		values[i] = uint8(i + 1)
+	slice := make([]uint8, 125)
+	for i := range slice {
+		slice[i] = uint8(i + 1)
 	}
 
 	// Shuffle the slice
 	rand.Seed(time.Now().UnixNano()) // Seed the random number generator
-	rand.Shuffle(len(values), func(i, j int) {
-		values[i], values[j] = values[j], values[i]
+	rand.Shuffle(len(slice), func(i, j int) {
+		slice[i], slice[j] = slice[j], slice[i]
 	})
 
 	// Assign shuffled values to the 3D configuration of the cube
-	c.unflatten(values)
+	c.unflatten(slice)
 }
 
 func (c *Cube) PrintSideways() {
@@ -272,6 +252,19 @@ func (c *Cube) FindRandomNeighbor() {
 	c.Swap(x1, y1, z1, x2, y2, z2)
 }
 
+// // Print the cube configuration
+// func (c *Cube) PrintConfiguration() {
+// 	for i := uint8(0); i < c.Dimension; i++ {
+// 		for j := uint8(0); j < c.Dimension; j++ {
+// 			for k := uint8(0); k < c.Dimension; k++ {
+// 				fmt.Printf("%d ", c.Configuration[i][j][k])
+// 			}
+// 			fmt.Println()
+// 		}
+// 		fmt.Println()
+// 	}
+// }
+
 func (c *Cube) Copy(original *Cube) {
 	for i := uint8(0); i < c.Dimension; i++ {
 		for j := uint8(0); j < c.Dimension; j++ {
@@ -308,9 +301,9 @@ func (c *Cube) Swap(x1, y1, z1, x2, y2, z2 uint8) {
 	c.SetValue()
 }
 
-func (c *Cube) FlatSwap(flat *[]uint8, i, j int) {
-	(*flat)[i], (*flat)[j] = (*flat)[j], (*flat)[i]
-}
+// func FlatSwap(flat *[]uint8, i, j int) {
+// 	(*flat)[i], (*flat)[j] = (*flat)[j], (*flat)[i]
+// }
 
 func (c *Cube) flatten() []uint8 {
 	flat := make([]uint8, 0, c.Dimension*c.Dimension*c.Dimension)
@@ -334,10 +327,11 @@ func (c *Cube) unflatten(flat []uint8) {
 			}
 		}
 	}
+
 	c.SetValue()
 }
 
-func IsSame(c1 *Cube, c2 *Cube) bool {
+func (c1 *Cube) IsSame(c2 *Cube) bool {
 	for i := uint8(0); i < c1.Dimension; i++ {
 		for j := uint8(0); j < c1.Dimension; j++ {
 			for k := uint8(0); k < c1.Dimension; k++ {
@@ -348,4 +342,24 @@ func IsSame(c1 *Cube, c2 *Cube) bool {
 		}
 	}
 	return true
+}
+
+func (c *Cube) GetDimension() uint8 {
+	return c.Dimension
+}
+
+func (c *Cube) GetValue() int {
+	return c.Value
+}
+
+func (c *Cube) GetValue1() int {
+	return c.Value1
+}
+
+func (c *Cube) GetValue2() int {
+	return c.Value2
+}
+
+func (c *Cube) GetConfiguration() [DIMENSION][DIMENSION][DIMENSION]uint8 {
+	return c.Configuration
 }
