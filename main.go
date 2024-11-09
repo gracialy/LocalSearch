@@ -9,6 +9,7 @@ import (
 )
 
 var cube *Cube
+var secondGA int = 0
 
 // var triggered bool
 
@@ -115,10 +116,42 @@ func runSimulatedAnnealing() {
 }
 
 func runGeneticAlgorithm() {
-	fmt.Printf("\n===GENETIC ALGORITHM===\n")
-	fmt.Println("Running genetic algorithm...")
+	fmt.Printf("===GENETIC ALGORITHM===\n")
+	multiplier := 1 + secondGA
+	populationSize := []int{
+		atoi(getUserInput(fmt.Sprintf("Enter POPULATION SIZE for ga%v: ", 1*multiplier))),
+		atoi(getUserInput(fmt.Sprintf("Enter POPULATION SIZE for ga%v: ", 2*multiplier))),
+		atoi(getUserInput(fmt.Sprintf("Enter POPULATION SIZE for ga%v: ", 3*multiplier))),
+	}
+	maxIterations := []int{
+		atoi(getUserInput(fmt.Sprintf("Enter MAX ITERATIONS for ga%v: ", 1*multiplier))),
+		atoi(getUserInput(fmt.Sprintf("Enter MAX ITERATIONS for ga%v: ", 2*multiplier))),
+		atoi(getUserInput(fmt.Sprintf("Enter MAX ITERATIONS for ga%v: ", 3*multiplier))),
+	}
+
+	fmt.Printf("Running genetic algorithm...\n")
+	ga1 := NewGeneticAlgorithm(cube, populationSize[0], maxIterations[0])
+	ga2 := NewGeneticAlgorithm(cube, populationSize[1], maxIterations[1])
+	ga3 := NewGeneticAlgorithm(cube, populationSize[2], maxIterations[2])
+	ga1.Run()
+	ga2.Run()
+	ga3.Run()
+
+	fmt.Printf("Generating dump file...\n")
+	ga1.Dump("Genetic Algorithm" + strconv.Itoa(1*multiplier))
+	ga2.Dump("Genetic Algorithm" + strconv.Itoa(2*multiplier))
+	ga3.Dump("Genetic Algorithm" + strconv.Itoa(3*multiplier))
+
+	fmt.Printf("Generating plot file...\n")
+	ga1.Plot("Genetic Algorithm" + strconv.Itoa(1*multiplier))
+	ga2.Plot("Genetic Algorithm" + strconv.Itoa(2*multiplier))
+	ga3.Plot("Genetic Algorithm" + strconv.Itoa(3*multiplier))
 
 	resultHeader()
+	resultHeader()
+	fmt.Printf("Genetic Algorithm\t%d\t%.2f\t%d\t%d\t%d\t%d\t\t\t%d\n", 1*multiplier, ga1.GetRuntime().Seconds(), ga1.GetEndState().Value, ga1.GetEndState().Value1, ga1.GetEndState().Value2, ga1.ActualIteration, ga1.PopulationSize)
+	fmt.Printf("Genetic Algorithm\t%d\t%.2f\t%d\t%d\t%d\t%d\t\t\t%d\n", 2*multiplier, ga2.GetRuntime().Seconds(), ga2.GetEndState().Value, ga2.GetEndState().Value1, ga2.GetEndState().Value2, ga2.ActualIteration, ga2.PopulationSize)
+	fmt.Printf("Genetic Algorithm\t%d\t%.2f\t%d\t%d\t%d\t%d\t\t\t%d\n", 3*multiplier, ga3.GetRuntime().Seconds(), ga3.GetEndState().Value, ga3.GetEndState().Value1, ga3.GetEndState().Value2, ga3.ActualIteration, ga3.PopulationSize)
 }
 
 func benchmarkAll() {
@@ -128,7 +161,10 @@ func benchmarkAll() {
 	runRandomRestartSidewaysMove()
 	runStochastic()
 	runSimulatedAnnealing()
-	// runGeneticAlgorithm()
+	runSimulatedAnnealing()
+	secondGA = 1
+	runGeneticAlgorithm()
+	secondGA = 0
 }
 
 func getUserInput(prompt string) string {
