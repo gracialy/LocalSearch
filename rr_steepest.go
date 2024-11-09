@@ -11,8 +11,8 @@ import (
 )
 
 type RR_sta struct {
-	Restart		  []SteepestAscent
-	MaxRestart	  int
+	Restart       []SteepestAscent
+	MaxRestart    int
 	ActualRuntime time.Duration
 }
 
