@@ -1,9 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"math"
 	"math/rand"
 	"time"
+
+	"gonum.org/v1/plot"
+	"gonum.org/v1/plot/plotter"
+	"gonum.org/v1/plot/vg"
 )
 
 const (
@@ -74,6 +79,77 @@ func (sa *SimulatedAnnealing) schedule(t int) {
 
 func (sa *SimulatedAnnealing) probability(delta float64) float64 {
 	return math.Exp(-delta / sa.T)
+}
+
+func (sa *SimulatedAnnealing) Plot(name string) {
+	p := plot.New()
+	e := sa.Experiment
+
+	text := "Plot " + name
+	text += fmt.Sprintf("\nIteration: %v", len(e.State))
+	text += fmt.Sprintf("\nFinal State Objective Value: %v", e.State[len(e.State)-1].Value)
+	text += fmt.Sprintf("\nRuntime: %v", e.GetRuntime())
+	text += fmt.Sprintf("\nStuck: %v", sa.stuck)
+	p.Title.Text = text
+	p.X.Label.Text = "Iteration"
+	p.Y.Label.Text = "Objective Function"
+	p.Add(plotter.NewGrid())
+
+	limit := CAP_PLOT
+	if len(e.State) < CAP_PLOT {
+		limit = len(e.State)
+	}
+
+	pts := make(plotter.XYs, limit)
+
+	for i := 0; i < limit; i++ {
+		pts[i].X = float64(i)
+		pts[i].Y = float64(cube.Value)
+	}
+
+	line, err := plotter.NewLine(pts)
+	if err != nil {
+		panic(err)
+	}
+	p.Add(line)
+
+	fileName := "img/" + name + ".png"
+
+	if err := p.Save(8*vg.Inch, 8*vg.Inch, fileName); err != nil {
+		panic(err)
+	}
+}
+
+func (sa *SimulatedAnnealing) BoltzmannPlot(name string) {
+	p := plot.New()
+
+	text := "Boltzmann Plot " + name
+	p.Title.Text = text
+	p.X.Label.Text = "Iteration"
+	p.Y.Label.Text = "Boltzmann Function"
+	p.Add(plotter.NewGrid())
+
+	limit := CAP_BOLTZMANN_PLOT
+	if len(sa.Boltzmann) < CAP_BOLTZMANN_PLOT {
+		limit = len(sa.Boltzmann)
+	}
+
+	pts := make(plotter.XYs, limit)
+
+	for i := 0; i < limit; i++ {
+		pts[i].X = float64(i)
+		pts[i].Y = float64(sa.Boltzmann[i])
+	}
+
+	scatter, err := plotter.NewScatter(pts)
+	if err != nil {
+		panic(err)
+	}
+	p.Add(scatter)
+
+	if err := p.Save(8*vg.Inch, 8*vg.Inch, "img/"+text+".png"); err != nil {
+		panic(err)
+	}
 }
 
 func (sa *SimulatedAnnealing) AppendProbability(probability float64) {
