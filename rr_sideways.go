@@ -113,6 +113,13 @@ func (rr_sm *RR_sm) IterationPlot(name string) {
 	}
 	p.Add(line)
 
+	// scatter, err := plotter.NewScatter(pts)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// scatter.GlyphStyle.Shape = draw.CircleGlyph{}
+	// p.Add(scatter)
+
 	if err := p.Save(8*vg.Inch, 8*vg.Inch, "img/"+text+".png"); err != nil {
 		panic(err)
 	}
@@ -150,7 +157,7 @@ func (rr_sm *RR_sm) GetRuntime() time.Duration {
 	return rr_sm.ActualRuntime
 }
 
-func (rr_sm *RR_sm) GetEndState() Cube {
+func (rr_sm *RR_sm) GetEndState() *Cube {
 	return rr_sm.Restart[len(rr_sm.Restart)-1].Experiment.GetEndState()
 }
 

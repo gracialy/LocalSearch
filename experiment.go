@@ -106,6 +106,6 @@ func (e *Experiment) SetRuntime(runtime time.Duration) {
 	e.Runtime = runtime
 }
 
-func (e *Experiment) GetEndState() Cube {
-	return e.State[len(e.State)-1]
+func (e *Experiment) GetEndState() *Cube {
+	return &e.State[len(e.State)-1]
 }

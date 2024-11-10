@@ -59,6 +59,7 @@ func (sm *SidewaysMove) Plot(name string) {
 	e := sm.Experiment
 
 	text := "Plot " + name
+	text += fmt.Sprintf("\nIteration: %v", len(e.State)-1)
 	text += fmt.Sprintf("\nFinal State Objective Value: %v", e.State[len(e.State)-1].Value)
 	text += fmt.Sprintf("\nRuntime: %v", e.GetRuntime())
 	text += fmt.Sprintf("\nMax Sideways: %v", sm.MaxSideways)

@@ -64,7 +64,7 @@ func runExperiment() {
 }
 
 func runSteepestAscent() {
-	fmt.Printf("\n===STEEPEST ASCENT===\n")
+	fmt.Printf("======================================STEEPEST ASCENT=======================================\n")
 	fmt.Printf("Running steepest ascent...\n")
 	sta1 := NewSteepestAscent(cube)
 	sta2 := NewSteepestAscent(cube)
@@ -72,6 +72,8 @@ func runSteepestAscent() {
 	sta1.Run()
 	sta2.Run()
 	sta3.Run()
+
+	PrintState(&sta1.Experiment, &sta2.Experiment, &sta3.Experiment)
 
 	resultHeader()
 	fmt.Printf("Steepest Ascent\t\t%d\t%.2f\t%d\t%d\t%d\t%d\n", 1, sta1.GetRuntime().Seconds(), sta1.GetEndState().Value, sta1.GetEndState().Value1, sta1.GetEndState().Value2, sta1.ActualIteration)
@@ -90,7 +92,7 @@ func runSteepestAscent() {
 }
 
 func runSidewaysMove() {
-	fmt.Printf("\n===SIDEWAYS MOVE===\n")
+	fmt.Printf("======================================SIDEWAYS MOVE=======================================\n")
 	maxSideways := []int{
 		atoi(getUserInput("Enter max sideways moves for sm1: ")),
 		atoi(getUserInput("Enter max sideways moves for sm2: ")),
@@ -104,6 +106,8 @@ func runSidewaysMove() {
 	sm1.Run()
 	sm2.Run()
 	sm3.Run()
+
+	PrintState(&sm1.Experiment, &sm2.Experiment, &sm3.Experiment)
 
 	resultHeader()
 	fmt.Printf("Sideways Move\t\t%d\t%.2f\t%d\t%d\t%d\t%d\n", 1, sm1.GetRuntime().Seconds(), sm1.GetEndState().Value, sm1.GetEndState().Value1, sm1.GetEndState().Value2, sm1.ActualIteration)
@@ -122,7 +126,7 @@ func runSidewaysMove() {
 }
 
 func runRandomRestartSteepestAscent() {
-	fmt.Printf("\n===RANDOM RESTART (STEEPEST ASCENT)===\n")
+	fmt.Printf("======================================RANDOM RESTART (STEEPEST ASCENT)=======================================\n")
 	maxRestart := []int{
 		atoi(getUserInput("Enter max restart for rr_sta1: ")),
 		atoi(getUserInput("Enter max restart for rr_sta2: ")),
@@ -139,6 +143,19 @@ func runRandomRestartSteepestAscent() {
 	rr_sta2.Run()
 	fmt.Print("Running iteration 3 of random restart (steepest ascent)...\n")
 	rr_sta3.Run()
+
+	fmt.Printf("Initial state:\n")
+	cube.PrintSideways()
+	fmt.Printf("===========================================================================================================\n")
+	fmt.Printf("End state 1:\n")
+	rr_sta1.GetEndState().PrintSideways()
+	fmt.Printf("===========================================================================================================\n")
+	fmt.Printf("End state 2:\n")
+	rr_sta2.GetEndState().PrintSideways()
+	fmt.Printf("===========================================================================================================\n")
+	fmt.Printf("End state 3:\n")
+	rr_sta3.GetEndState().PrintSideways()
+	fmt.Printf("===========================================================================================================\n")
 
 	resultHeader()
 	fmt.Printf("RR (sta)\t\t%d\t%.2f\t%d\t%d\t%d\t%d*%d (avg)\n", 1, rr_sta1.GetRuntime().Seconds(), rr_sta1.GetEndState().Value, rr_sta1.GetEndState().Value1, rr_sta1.GetEndState().Value2, len(rr_sta1.Restart), rr_sta1.AverageIterations())
@@ -162,17 +179,17 @@ func runRandomRestartSteepestAscent() {
 }
 
 func runRandomRestartSidewaysMove() {
-	fmt.Printf("===RANDOM RESTART (SIDEWAYS MOVE)===\n")
+	fmt.Printf("======================================RANDOM RESTART (SIDEWAYS MOVE)=======================================\n")
 	maxRestart := []int{
-		atoi(getUserInput("Enter max RESTART for rr_sm1: ")),
-		atoi(getUserInput("Enter max RESTART for rr_sm2: ")),
-		atoi(getUserInput("Enter max RESTART for rr_sm3: ")),
+		atoi(getUserInput("Enter max RESTART for rr_sta1: ")),
+		atoi(getUserInput("Enter max RESTART for rr_sta2: ")),
+		atoi(getUserInput("Enter max RESTART for rr_sta3: ")),
 	}
 
 	maxSideways := []int{
-		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sm1: ")),
-		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sm2: ")),
-		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sm3: ")),
+		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sta1: ")),
+		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sta2: ")),
+		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sta3: ")),
 	}
 
 	fmt.Printf("Running random restart (sideways move)...\n")
@@ -185,6 +202,19 @@ func runRandomRestartSidewaysMove() {
 	rr_sm2.Run()
 	fmt.Print("Running iteration 3 of random restart (sideways move)...\n")
 	rr_sm3.Run()
+
+	fmt.Printf("Initial state:\n")
+	cube.PrintSideways()
+	fmt.Printf("===========================================================================================================\n")
+	fmt.Printf("End state 1:\n")
+	rr_sm1.GetEndState().PrintSideways()
+	fmt.Printf("===========================================================================================================\n")
+	fmt.Printf("End state 2:\n")
+	rr_sm2.GetEndState().PrintSideways()
+	fmt.Printf("===========================================================================================================\n")
+	fmt.Printf("End state 3:\n")
+	rr_sm3.GetEndState().PrintSideways()
+	fmt.Printf("===========================================================================================================\n")
 
 	resultHeader()
 	fmt.Printf("RR (sm)\t\t\t%d\t%.2f\t%d\t%d\t%d\t%d*%d\n", 1, rr_sm1.GetRuntime().Seconds(), rr_sm1.GetEndState().Value, rr_sm1.GetEndState().Value1, rr_sm1.GetEndState().Value2, len(rr_sm1.Restart), rr_sm1.AverageIterations())
@@ -208,7 +238,7 @@ func runRandomRestartSidewaysMove() {
 }
 
 func runStochastic() {
-	fmt.Printf("\n===STOCHASTIC===\n")
+	fmt.Printf("======================================STOCHASTIC=======================================\n")
 	maxIterations := []int{
 		atoi(getUserInput("Enter max iterations for s1: ")),
 		atoi(getUserInput("Enter max iterations for s2: ")),
@@ -222,6 +252,8 @@ func runStochastic() {
 	s1.Run()
 	s2.Run()
 	s3.Run()
+
+	PrintState(&s1.Experiment, &s2.Experiment, &s3.Experiment)
 
 	resultHeader()
 	fmt.Printf("Stochastic\t\t%d\t%.2f\t%d\t%d\t%d\t%d\n", 1, s1.GetRuntime().Seconds(), s1.GetEndState().Value, s1.GetEndState().Value1, s1.GetEndState().Value2, s1.MaxIterations)
@@ -240,7 +272,7 @@ func runStochastic() {
 }
 
 func runSimulatedAnnealing() {
-	fmt.Printf("\n===SIMULATED ANNEALING===\n")
+	fmt.Printf("======================================SIMULATED ANNEALING=======================================\n")
 	initialT := []float64{
 		atof(getUserInput("Enter initial T for sa1 (0.1..]: ")),
 		atof(getUserInput("Enter initial T for sa2 (0.1..]: ")),
@@ -254,6 +286,8 @@ func runSimulatedAnnealing() {
 	sa1.Run()
 	sa2.Run()
 	sa3.Run()
+
+	PrintState(&sa1.Experiment, &sa2.Experiment, &sa3.Experiment)
 
 	resultHeader()
 	fmt.Printf("Simulated annealing\t%d\t%.2f\t%d\t%d\t%d\t%d\t\t%d\n", 1, sa1.GetRuntime().Seconds(), sa1.GetEndState().Value, sa1.GetEndState().Value1, sa1.GetEndState().Value2, sa1.ActualIteration, sa1.stuck)
@@ -274,10 +308,11 @@ func runSimulatedAnnealing() {
 	sa1.BoltzmannPlot("Simulated Annealing 1")
 	sa2.BoltzmannPlot("Simulated Annealing 2")
 	sa3.BoltzmannPlot("Simulated Annealing 3")
+
 }
 
 func runGeneticAlgorithm() {
-	fmt.Printf("===GENETIC ALGORITHM===\n")
+	fmt.Printf("======================================GENETIC ALGORITHM=======================================\n")
 	multiplier := 1 + secondGA
 	populationSize := []int{
 		atoi(getUserInput(fmt.Sprintf("Enter POPULATION SIZE for ga%v: ", 1*multiplier))),
@@ -308,7 +343,8 @@ func runGeneticAlgorithm() {
 	ga2.Plot("Genetic Algorithm" + strconv.Itoa(2*multiplier))
 	ga3.Plot("Genetic Algorithm" + strconv.Itoa(3*multiplier))
 
-	resultHeader()
+	PrintState(&ga1.Experiment, &ga2.Experiment, &ga3.Experiment)
+
 	resultHeader()
 	fmt.Printf("Genetic Algorithm\t%d\t%.2f\t%d\t%d\t%d\t%d\t\t\t%d\n", 1*multiplier, ga1.GetRuntime().Seconds(), ga1.GetEndState().Value, ga1.GetEndState().Value1, ga1.GetEndState().Value2, ga1.ActualIteration, ga1.PopulationSize)
 	fmt.Printf("Genetic Algorithm\t%d\t%.2f\t%d\t%d\t%d\t%d\t\t\t%d\n", 2*multiplier, ga2.GetRuntime().Seconds(), ga2.GetEndState().Value, ga2.GetEndState().Value1, ga2.GetEndState().Value2, ga2.ActualIteration, ga2.PopulationSize)
@@ -362,4 +398,19 @@ func resultHeader() {
 	fmt.Printf("===========================================================================================================\n")
 	fmt.Printf("Initial\t\t\t\t\t%d\t%d\t%d\n", cube.GetValue(), cube.GetValue1(), cube.GetValue2())
 	// triggered = true
+}
+
+func PrintState(run1 *Experiment, run2 *Experiment, run3 *Experiment) {
+	fmt.Printf("Initial state:\n")
+	cube.PrintSideways()
+	fmt.Printf("===========================================================================================================\n")
+	fmt.Printf("End state 1:\n")
+	run1.GetEndState().PrintSideways()
+	fmt.Printf("===========================================================================================================\n")
+	fmt.Printf("End state 2:\n")
+	run2.GetEndState().PrintSideways()
+	fmt.Printf("===========================================================================================================\n")
+	fmt.Printf("End state 3:\n")
+	run3.GetEndState().PrintSideways()
+	fmt.Printf("===========================================================================================================\n")
 }
