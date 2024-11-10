@@ -162,7 +162,49 @@ func runRandomRestartSteepestAscent() {
 }
 
 func runRandomRestartSidewaysMove() {
-	fmt.Printf("\n===RANDOM RESTART (SIDEWAYS MOVE)===\n")
+	fmt.Printf("===RANDOM RESTART (SIDEWAYS MOVE)===\n")
+	maxRestart := []int{
+		atoi(getUserInput("Enter max RESTART for rr_sta1: ")),
+		atoi(getUserInput("Enter max RESTART for rr_sta2: ")),
+		atoi(getUserInput("Enter max RESTART for rr_sta3: ")),
+	}
+
+	maxSideways := []int{
+		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sta1: ")),
+		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sta2: ")),
+		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sta3: ")),
+	}
+
+	fmt.Printf("Running random restart (sideways move)...\n")
+	rr_sm1 := NewRR_sm(cube, maxRestart[0], maxSideways[0])
+	rr_sm2 := NewRR_sm(cube, maxRestart[1], maxSideways[1])
+	rr_sm3 := NewRR_sm(cube, maxRestart[2], maxSideways[2])
+	fmt.Print("Running iteration 1 of random restart (sideways move)...\n")
+	rr_sm1.Run()
+	fmt.Print("Running iteration 2 of random restart (sideways move)...\n")
+	rr_sm2.Run()
+	fmt.Print("Running iteration 3 of random restart (sideways move)...\n")
+	rr_sm3.Run()
+
+	resultHeader()
+	fmt.Printf("RR (sm)\t\t\t%d\t%.2f\t%d\t%d\t%d\t%d*%d\n", 1, rr_sm1.GetRuntime().Seconds(), rr_sm1.GetEndState().Value, rr_sm1.GetEndState().Value1, rr_sm1.GetEndState().Value2, len(rr_sm1.Restart), rr_sm1.AverageIterations())
+	fmt.Printf("RR (sm)\t\t\t%d\t%.2f\t%d\t%d\t%d\t%d*%d\n", 2, rr_sm2.GetRuntime().Seconds(), rr_sm2.GetEndState().Value, rr_sm2.GetEndState().Value1, rr_sm2.GetEndState().Value2, len(rr_sm2.Restart), rr_sm2.AverageIterations())
+	fmt.Printf("RR (sm)\t\t\t%d\t%.2f\t%d\t%d\t%d\t%d*%d\n", 3, rr_sm3.GetRuntime().Seconds(), rr_sm3.GetEndState().Value, rr_sm3.GetEndState().Value1, rr_sm3.GetEndState().Value2, len(rr_sm3.Restart), rr_sm3.AverageIterations())
+
+	fmt.Printf("Generating dump file...\n")
+	rr_sm1.Dump("Random Restart (Sideways Move) 1")
+	rr_sm2.Dump("Random Restart (Sideways Move) 2")
+	rr_sm3.Dump("Random Restart (Sideways Move) 3")
+
+	fmt.Printf("Generating plot file...\n")
+	rr_sm1.Plot("Random Restart (Sideways Move) 1")
+	rr_sm2.Plot("Random Restart (Sideways Move) 2")
+	rr_sm3.Plot("Random Restart (Sideways Move) 3")
+
+	fmt.Printf("Generating iteration plot file...\n")
+	rr_sm1.IterationPlot("Random Restart (Sideways Move) 1")
+	rr_sm2.IterationPlot("Random Restart (Sideways Move) 2")
+	rr_sm3.IterationPlot("Random Restart (Sideways Move) 3")
 }
 
 func runStochastic() {
