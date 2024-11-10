@@ -113,13 +113,6 @@ func (rr_sm *RR_sm) IterationPlot(name string) {
 	}
 	p.Add(line)
 
-	// scatter, err := plotter.NewScatter(pts)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// scatter.GlyphStyle.Shape = draw.CircleGlyph{}
-	// p.Add(scatter)
-
 	if err := p.Save(8*vg.Inch, 8*vg.Inch, "img/"+text+".png"); err != nil {
 		panic(err)
 	}
