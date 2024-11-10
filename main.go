@@ -65,10 +65,60 @@ func runExperiment() {
 
 func runSteepestAscent() {
 	fmt.Printf("\n===STEEPEST ASCENT===\n")
+	fmt.Printf("Running steepest ascent...\n")
+	sta1 := NewSteepestAscent(cube)
+	sta2 := NewSteepestAscent(cube)
+	sta3 := NewSteepestAscent(cube)
+	sta1.Run()
+	sta2.Run()
+	sta3.Run()
+
+	resultHeader()
+	fmt.Printf("Steepest Ascent\t\t%d\t%.2f\t%d\t%d\t%d\t%d\n", 1, sta1.GetRuntime().Seconds(), sta1.GetEndState().Value, sta1.GetEndState().Value1, sta1.GetEndState().Value2, sta1.ActualIteration)
+	fmt.Printf("Steepest Ascent\t\t%d\t%.2f\t%d\t%d\t%d\t%d\n", 2, sta2.GetRuntime().Seconds(), sta2.GetEndState().Value, sta2.GetEndState().Value1, sta2.GetEndState().Value2, sta2.ActualIteration)
+	fmt.Printf("Steepest Ascent\t\t%d\t%.2f\t%d\t%d\t%d\t%d\n", 3, sta3.GetRuntime().Seconds(), sta3.GetEndState().Value, sta3.GetEndState().Value1, sta3.GetEndState().Value2, sta3.ActualIteration)
+
+	fmt.Printf("Generating dump file...\n")
+	sta1.Dump("Steepest Ascent 1")
+	sta2.Dump("Steepest Ascent 2")
+	sta3.Dump("Steepest Ascent 3")
+
+	fmt.Printf("Generating plot file...\n")
+	sta1.Plot("Steepest Ascent 1")
+	sta2.Plot("Steepest Ascent 2")
+	sta3.Plot("Steepest Ascent 3")
 }
 
 func runSidewaysMove() {
 	fmt.Printf("\n===SIDEWAYS MOVE===\n")
+	maxSideways := []int{
+		atoi(getUserInput("Enter max sideways moves for sm1: ")),
+		atoi(getUserInput("Enter max sideways moves for sm2: ")),
+		atoi(getUserInput("Enter max sideways moves for sm3: ")),
+	}
+
+	fmt.Printf("Running sideways move...\n")
+	sm1 := NewSidewaysMove(cube, maxSideways[0])
+	sm2 := NewSidewaysMove(cube, maxSideways[1])
+	sm3 := NewSidewaysMove(cube, maxSideways[2])
+	sm1.Run()
+	sm2.Run()
+	sm3.Run()
+
+	resultHeader()
+	fmt.Printf("Sideways Move\t\t%d\t%.2f\t%d\t%d\t%d\t%d\n", 1, sm1.GetRuntime().Seconds(), sm1.GetEndState().Value, sm1.GetEndState().Value1, sm1.GetEndState().Value2, sm1.ActualIteration)
+	fmt.Printf("Sideways Move\t\t%d\t%.2f\t%d\t%d\t%d\t%d\n", 2, sm2.GetRuntime().Seconds(), sm2.GetEndState().Value, sm2.GetEndState().Value1, sm2.GetEndState().Value2, sm2.ActualIteration)
+	fmt.Printf("Sideways Move\t\t%d\t%.2f\t%d\t%d\t%d\t%d\n", 3, sm3.GetRuntime().Seconds(), sm3.GetEndState().Value, sm3.GetEndState().Value1, sm3.GetEndState().Value2, sm3.ActualIteration)
+
+	fmt.Printf("Generating dump file...\n")
+	sm1.Dump("Sideways Move 1")
+	sm2.Dump("Sideways Move 2")
+	sm3.Dump("Sideways Move 3")
+
+	fmt.Printf("Generating plot file...\n")
+	sm1.Plot("Sideways Move 1")
+	sm2.Plot("Sideways Move 2")
+	sm3.Plot("Sideways Move 3")
 }
 
 func runRandomRestartSteepestAscent() {
