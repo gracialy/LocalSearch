@@ -123,6 +123,42 @@ func runSidewaysMove() {
 
 func runRandomRestartSteepestAscent() {
 	fmt.Printf("\n===RANDOM RESTART (STEEPEST ASCENT)===\n")
+	maxRestart := []int{
+		atoi(getUserInput("Enter max restart for rr_sta1: ")),
+		atoi(getUserInput("Enter max restart for rr_sta2: ")),
+		atoi(getUserInput("Enter max restart for rr_sta3: ")),
+	}
+
+	fmt.Printf("Running random restart (steepest ascent)...\n")
+	rr_sta1 := NewRR_sta(cube, maxRestart[0])
+	rr_sta2 := NewRR_sta(cube, maxRestart[1])
+	rr_sta3 := NewRR_sta(cube, maxRestart[2])
+	fmt.Print("Running iteration 1 of random restart (steepest ascent)...\n")
+	rr_sta1.Run()
+	fmt.Print("Running iteration 2 of random restart (steepest ascent)...\n")
+	rr_sta2.Run()
+	fmt.Print("Running iteration 3 of random restart (steepest ascent)...\n")
+	rr_sta3.Run()
+
+	resultHeader()
+	fmt.Printf("RR (sta)\t\t%d\t%.2f\t%d\t%d\t%d\t%d*%d (avg)\n", 1, rr_sta1.GetRuntime().Seconds(), rr_sta1.GetEndState().Value, rr_sta1.GetEndState().Value1, rr_sta1.GetEndState().Value2, len(rr_sta1.Restart), rr_sta1.AverageIterations())
+	fmt.Printf("RR (sta)\t\t%d\t%.2f\t%d\t%d\t%d\t%d*%d (avg)\n", 2, rr_sta2.GetRuntime().Seconds(), rr_sta2.GetEndState().Value, rr_sta2.GetEndState().Value1, rr_sta2.GetEndState().Value2, len(rr_sta2.Restart), rr_sta2.AverageIterations())
+	fmt.Printf("RR (sta)\t\t%d\t%.2f\t%d\t%d\t%d\t%d*%d (avg)\n", 3, rr_sta3.GetRuntime().Seconds(), rr_sta3.GetEndState().Value, rr_sta3.GetEndState().Value1, rr_sta3.GetEndState().Value2, len(rr_sta3.Restart), rr_sta3.AverageIterations())
+
+	fmt.Printf("Generating dump file...\n")
+	rr_sta1.Dump("Random Restart (Steepest Ascent) 1")
+	rr_sta2.Dump("Random Restart (Steepest Ascent) 2")
+	rr_sta3.Dump("Random Restart (Steepest Ascent) 3")
+
+	fmt.Printf("Generating plot file...\n")
+	rr_sta1.Plot("Random Restart (Steepest Ascent) 1")
+	rr_sta2.Plot("Random Restart (Steepest Ascent) 2")
+	rr_sta3.Plot("Random Restart (Steepest Ascent) 3")
+
+	fmt.Printf("Generating iteration plot file...\n")
+	rr_sta1.IterationPlot("Random Restart (Steepest Ascent) 1")
+	rr_sta2.IterationPlot("Random Restart (Steepest Ascent) 2")
+	rr_sta3.IterationPlot("Random Restart (Steepest Ascent) 3")
 }
 
 func runRandomRestartSidewaysMove() {
@@ -163,6 +199,39 @@ func runStochastic() {
 
 func runSimulatedAnnealing() {
 	fmt.Printf("\n===SIMULATED ANNEALING===\n")
+	initialT := []float64{
+		atof(getUserInput("Enter initial T for sa1 (0.1..]: ")),
+		atof(getUserInput("Enter initial T for sa2 (0.1..]: ")),
+		atof(getUserInput("Enter initial T for sa3 (0.1..]: ")),
+	}
+
+	fmt.Printf("Running simulated annealing...\n")
+	sa1 := NewSimulatedAnnealing(cube, float64(initialT[0]))
+	sa2 := NewSimulatedAnnealing(cube, float64(initialT[1]))
+	sa3 := NewSimulatedAnnealing(cube, float64(initialT[2]))
+	sa1.Run()
+	sa2.Run()
+	sa3.Run()
+
+	resultHeader()
+	fmt.Printf("Simulated annealing\t%d\t%.2f\t%d\t%d\t%d\t%d\t\t%d\n", 1, sa1.GetRuntime().Seconds(), sa1.GetEndState().Value, sa1.GetEndState().Value1, sa1.GetEndState().Value2, sa1.ActualIteration, sa1.stuck)
+	fmt.Printf("Simulated annealing\t%d\t%.2f\t%d\t%d\t%d\t%d\t\t%d\n", 2, sa2.GetRuntime().Seconds(), sa2.GetEndState().Value, sa2.GetEndState().Value1, sa2.GetEndState().Value2, sa2.ActualIteration, sa2.stuck)
+	fmt.Printf("Simulated annealing\t%d\t%.2f\t%d\t%d\t%d\t%d\t\t%d\n", 3, sa3.GetRuntime().Seconds(), sa3.GetEndState().Value, sa3.GetEndState().Value1, sa3.GetEndState().Value2, sa3.ActualIteration, sa3.stuck)
+
+	fmt.Printf("Generating dump file...\n")
+	sa1.Dump("Simulated Annealing 1")
+	sa2.Dump("Simulated Annealing 2")
+	sa3.Dump("Simulated Annealing 3")
+
+	fmt.Printf("Generating plot file...\n")
+	sa1.Plot("Simulated Annealing 1")
+	sa2.Plot("Simulated Annealing 2")
+	sa3.Plot("Simulated Annealing 3")
+
+	fmt.Printf("Generating Boltzmann plot file...\n")
+	sa1.BoltzmannPlot("Simulated Annealing 1")
+	sa2.BoltzmannPlot("Simulated Annealing 2")
+	sa3.BoltzmannPlot("Simulated Annealing 3")
 }
 
 func runGeneticAlgorithm() {
