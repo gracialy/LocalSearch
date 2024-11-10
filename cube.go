@@ -195,8 +195,8 @@ func (c *Cube) Random() {
 	}
 
 	// Shuffle the slice
-	rand.Seed(time.Now().UnixNano()) // Seed the random number generator
-	rand.Shuffle(len(slice), func(i, j int) {
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	r.Shuffle(len(slice), func(i, j int) {
 		slice[i], slice[j] = slice[j], slice[i]
 	})
 

@@ -43,12 +43,19 @@ func (sa *SimulatedAnnealing) Run() {
 	current := init.Clone()
 	neighbor := current.Clone()
 
+	// clearing Boltzmann track
+	// err := os.WriteFile("tmp/sa_dump.txt", []byte{}, 0644)
+	// if err != nil {
+	// 	fmt.Println("Error clearing tmp/sa_dump.txt:", err)
+	// 	return
+	// }
+
 	for i := 1; i < SA_MAX; i++ {
 		sa.schedule(i)
 		sa.ActualIteration = i
 
 		if sa.T <= CAP_T {
-			// very close to 0 since the T will never touch 0
+			// very close to 0 since the T will never touch sharp 0
 			break
 		}
 
@@ -59,7 +66,7 @@ func (sa *SimulatedAnnealing) Run() {
 		random := rand.Float64()
 		sa.AppendProbability(probability)
 
-		if delta <= 0 {
+		if delta < 0 {
 			current.Copy(neighbor)
 			sa.Boltzmann[len(sa.Boltzmann)-1] = sa.InitialT
 		} else if probability > random {
@@ -68,6 +75,19 @@ func (sa *SimulatedAnnealing) Run() {
 		}
 
 		sa.Experiment.AppendState(current)
+
+		// keep track of the Boltzmann
+		// f, err := os.OpenFile("tmp/sa_dump.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		// if err != nil {
+		// 	fmt.Println("Error opening tmp/sa_dump.txt:", err)
+		// 	return
+		// }
+		// defer f.Close()
+
+		// if _, err := f.WriteString(fmt.Sprintf("(%6d) T: %.2f B: %.2f random: %.2f d: %3d obj: %d\n", i, sa.T, probability, random, delta, current.Value)); err != nil {
+		// 	fmt.Println("Error writing tmp/sa_dump.txt:", err)
+		// 	return
+		// }
 	}
 
 	sa.Experiment.SetRuntime(time.Since(start))
@@ -104,7 +124,7 @@ func (sa *SimulatedAnnealing) Plot(name string) {
 
 	for i := 0; i < limit; i++ {
 		pts[i].X = float64(i)
-		pts[i].Y = float64(cube.Value)
+		pts[i].Y = float64(sa.State[i].Value) // TODO WAS WRONG
 	}
 
 	line, err := plotter.NewLine(pts)

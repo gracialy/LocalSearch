@@ -154,7 +154,7 @@ func (rr_sta *RR_sta) GetRuntime() time.Duration {
 	return rr_sta.ActualRuntime
 }
 
-func (rr_sta *RR_sta) GetEndState() Cube {
+func (rr_sta *RR_sta) GetEndState() *Cube {
 	return rr_sta.Restart[len(rr_sta.Restart)-1].Experiment.GetEndState()
 }
 
