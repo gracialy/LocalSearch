@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"os"
 	"time"
 
 	"gonum.org/v1/plot"
@@ -69,35 +68,35 @@ func (ga *GeneticAlgorithm) Run() {
 	eliteSize = int(float64(ga.PopulationSize) * elitePercent)
 
 	// clear the dump file
-	err := os.WriteFile("tmp/ga_dump.txt", []byte{}, 0644)
-	if err != nil {
-		fmt.Println("Error clearing tmp/ga_dump.txt:", err)
-		return
-	}
-	fmt.Printf("\n")
+	// err := os.WriteFile("tmp/ga_dump.txt", []byte{}, 0644)
+	// if err != nil {
+	// 	fmt.Println("Error clearing tmp/ga_dump.txt:", err)
+	// 	return
+	// }
+	// fmt.Printf("\n")
 	//
 
 	for {
 		ga.Sort()
 
 		// keep track of the population value
-		populationValues := ""
-		for i := 0; i < ga.PopulationSize; i++ {
-			populationValues += fmt.Sprintf("%d ", ga.Population[i].Value)
-		}
-		populationValues += "\n"
+		// populationValues := ""
+		// for i := 0; i < ga.PopulationSize; i++ {
+		// 	populationValues += fmt.Sprintf("%d ", ga.Population[i].Value)
+		// }
+		// populationValues += "\n"
 
-		f, err := os.OpenFile("tmp/ga_dump.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
-		if err != nil {
-			fmt.Println("Error opening tmp/ga_dump.txt:", err)
-			return
-		}
-		defer f.Close()
+		// f, err := os.OpenFile("tmp/ga_dump.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+		// if err != nil {
+		// 	fmt.Println("Error opening tmp/ga_dump.txt:", err)
+		// 	return
+		// }
+		// defer f.Close()
 
-		if _, err = f.WriteString(populationValues); err != nil {
-			fmt.Println("Error writing to tmp/ga_dump.txt:", err)
-			return
-		}
+		// if _, err = f.WriteString(populationValues); err != nil {
+		// 	fmt.Println("Error writing to tmp/ga_dump.txt:", err)
+		// 	return
+		// }
 		//
 
 		// add best cube to the experiment state
