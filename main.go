@@ -181,15 +181,15 @@ func runRandomRestartSteepestAscent() {
 func runRandomRestartSidewaysMove() {
 	fmt.Printf("======================================RANDOM RESTART (SIDEWAYS MOVE)=======================================\n")
 	maxRestart := []int{
-		atoi(getUserInput("Enter max RESTART for rr_sta1: ")),
-		atoi(getUserInput("Enter max RESTART for rr_sta2: ")),
-		atoi(getUserInput("Enter max RESTART for rr_sta3: ")),
+		atoi(getUserInput("Enter max RESTART for rr_sm1: ")),
+		atoi(getUserInput("Enter max RESTART for rr_sm2: ")),
+		atoi(getUserInput("Enter max RESTART for rr_sm3: ")),
 	}
 
 	maxSideways := []int{
-		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sta1: ")),
-		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sta2: ")),
-		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sta3: ")),
+		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sm1: ")),
+		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sm2: ")),
+		atoi(getUserInput("Enter max SIDEWAY MOVES for rr_sm3: ")),
 	}
 
 	fmt.Printf("Running random restart (sideways move)...\n")
