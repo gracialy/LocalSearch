@@ -19,12 +19,8 @@ class CubeStatePlayer {
         this.layer5 = document.getElementById('layer5')
 
         // player
-        this.startBtn = document.getElementById('startBtn');
-        this.prevBtn = document.getElementById('prevBtn');
         this.playPauseBtn = document.getElementById('playPauseBtn');
-        this.nextBtn = document.getElementById('nextBtn');
-        this.endBtn = document.getElementById('endBtn');
-
+        
         // speed 
         this.speedSlider = document.getElementById('speedSlider');
         this.progressSlider = document.getElementById('progressSlider');
@@ -48,11 +44,7 @@ class CubeStatePlayer {
 
 
         // player
-        this.startBtn.addEventListener('click', () => this.goToStart());
-        this.prevBtn.addEventListener('click', () => this.previousState());
         this.playPauseBtn.addEventListener('click', () => this.playPause());
-        this.nextBtn.addEventListener('click', () => this.nextState());
-        this.endBtn.addEventListener('click', () => this.goToEnd());
 
         // speed
         this.speedSlider.addEventListener('input', () => this.updateSpeed());
@@ -62,10 +54,6 @@ class CubeStatePlayer {
     // add files to list
     handleFileSelect() {
         const files = Array.from(this.fileInput.files);
-        this.updateFileList(files);
-    }
-
-    updateFileList(files) {
         files.forEach((file, index) => {
             const option = document.createElement('option');
             option.value = index;
@@ -187,24 +175,12 @@ class CubeStatePlayer {
 
     updateControls() {
         const hasStates = this.states.length > 0;
-        const isFirst = this.currentStateIndex === 0;
         const isLast = this.currentStateIndex === this.states.length - 1;
 
-        this.startBtn.disabled = !hasStates || isFirst;
-        this.prevBtn.disabled = !hasStates || isFirst;
         this.playPauseBtn.disabled = !hasStates || isLast;
-        this.nextBtn.disabled = !hasStates || isLast;
-        this.endBtn.disabled = !hasStates || isLast;
 
         this.progressSlider.max = Math.max(0, this.states.length - 1);
         this.progressSlider.value = this.currentStateIndex;
-    }
-
-    // load initial state
-    goToStart() {
-        this.currentStateIndex = 0;
-        this.updateDisplay();
-        this.updateControls();
     }
 
     // load previous state
@@ -248,13 +224,6 @@ class CubeStatePlayer {
             this.updateDisplay();
             this.updateControls();
         }
-    }
-
-    // load final state
-    goToEnd() {
-        this.currentStateIndex = this.states.length - 1;
-        this.updateDisplay();
-        this.updateControls();
     }
 
     // adjust speed

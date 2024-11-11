@@ -42,7 +42,7 @@ export GOPROXY=https://goproxy.io
 - Run Go & experiment
 
 ```
-go run main.go cube.go experiment.go steepest_ascent.go sideways_move.go stochastic.go rr_sideways.go rr_steepest.go simulated_annealing.go genetic_algorithm.go
+cd src && go run main.go cube.go experiment.go steepest_ascent.go sideways_move.go stochastic.go rr_sideways.go rr_steepest.go simulated_annealing.go genetic_algorithm.go
 ```
 
 - Open `index.html ` from your file manager
@@ -53,5 +53,13 @@ go run main.go cube.go experiment.go steepest_ascent.go sideways_move.go stochas
 To skip the hassle, execute the binary provided
 
 ```
-./bin/localsearch
+cd bin && ./localsearch
 ```
+
+## Contribution
+| NIM           | Name                         | Contribution  |
+| ------------- | ---------------------------- | ------------- |
+| 18222034      | Christoper Daniel            | Random Restart Hill-climbing (Sideways), Simulated Annealing |
+| 18222035      | Lydia Gracia                 | Stochastic Hill-climbing, Genetic Algorithm |
+| 18222049      | Willhelmina Rachel Silalahi  | Steepest Ascent Hill-climbing, Hill-climbing with Sideways Move |
+| 18222100      | Ervina Limka                 | Random Restart Hill-climbing (Steepest), Simulated Annealing |
