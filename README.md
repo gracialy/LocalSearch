@@ -60,6 +60,6 @@ cd bin && ./localsearch
 | NIM           | Name                         | Contribution  |
 | ------------- | ---------------------------- | ------------- |
 | 18222034      | Christoper Daniel            | Random Restart Hill-climbing (Sideways), Simulated Annealing |
-| 18222035      | Lydia Gracia                 | Stochastic Hill-climbing, Genetic Algorithm |
+| 18222035      | Lydia Gracia                 | Stochastic Hill-climbing, Genetic Algorithm, Video Player |
 | 18222049      | Willhelmina Rachel Silalahi  | Steepest Ascent Hill-climbing, Hill-climbing with Sideways Move |
 | 18222100      | Ervina Limka                 | Random Restart Hill-climbing (Steepest), Simulated Annealing |
