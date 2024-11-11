@@ -35,4 +35,5 @@ Institut Teknologi Bandung
 
 ## How to Use (Alternative)
 To skip the hassle, execute the binary provided
-```./localsearch```
+
+```./bin/localsearch```
