@@ -38,9 +38,9 @@ class CubeStatePlayer {
 
     addEventListeners() {
         // file
-        this.fileInput.addEventListener('change', () => this.handleFileSelect());
+        this.fileInput.addEventListener('change', () => this.handleFileUpload());
         this.fileReset.addEventListener('click', () => this.handleReset());
-        this.fileSelect.addEventListener('change', () => this.loadSelectedFile());
+        this.fileSelect.addEventListener('change', () => this.handleFileSelect());
 
 
         // player
@@ -48,11 +48,11 @@ class CubeStatePlayer {
 
         // speed
         this.speedSlider.addEventListener('input', () => this.updateSpeed());
-        this.progressSlider.addEventListener('input', () => this.goToPosition());
+        this.progressSlider.addEventListener('input', () => this.updatePosition());
     }
 
     // add files to list
-    handleFileSelect() {
+    handleFileUpload() {
         const files = Array.from(this.fileInput.files);
         files.forEach((file, index) => {
             const option = document.createElement('option');
@@ -67,6 +67,8 @@ class CubeStatePlayer {
         this.fileInput.value = '';
         this.fileSelect.innerHTML = '<option value="">Select a file</option>';
         this.states = [];
+        this.speedSlider.value = "1.0"
+        this.updateSpeed();
         this.updateDisplay();
         this.updateControls();
         this.updateSpeed();
@@ -92,7 +94,7 @@ class CubeStatePlayer {
         this.renderLayer(this.layer4, currentState.layer4, previousState ? previousState.layer4 : []);
         this.renderLayer(this.layer5, currentState.layer5, previousState ? previousState.layer5 : []);
 
-        this.updateProgressLabel();
+        this.progressLabel.textContent = `${this.currentStateIndex + 1} / ${this.states.length}`;
     }
 
     parseState(stateStr) {
@@ -150,18 +152,14 @@ class CubeStatePlayer {
                 if (previousLayerData[rowIndex] && previousLayerData[rowIndex][colIndex] !== value) {
                     cell.classList.add('changed-cell');
                 }
+                
                 container.appendChild(cell);
             });
         });
     }
 
-    updateProgressLabel() {
-        this.progressLabel.textContent =
-            `${this.currentStateIndex + 1} / ${this.states.length}`;
-    }
-
     // load selected file
-    async loadSelectedFile() {
+    async handleFileSelect() {
         const fileIndex = this.fileSelect.value;
         if (fileIndex === '') return;
 
@@ -169,27 +167,19 @@ class CubeStatePlayer {
         const content = await file.text();
         this.states = content.trim().split('\n');
         this.currentStateIndex = 0;
+        this.speedSlider.value = "1.0";
+        this.updateSpeed();
         this.updateDisplay();
         this.updateControls();
     }
 
     updateControls() {
-        const hasStates = this.states.length > 0;
-        const isLast = this.currentStateIndex === this.states.length - 1;
-
-        this.playPauseBtn.disabled = !hasStates || isLast;
-
-        this.progressSlider.max = Math.max(0, this.states.length - 1);
-        this.progressSlider.value = this.currentStateIndex;
-    }
-
-    // load previous state
-    previousState() {
-        if (this.currentStateIndex > 0) {
-            this.currentStateIndex--;
-            this.updateDisplay();
-            this.updateControls();
+        if (this.states.length === 0 && this.currentStateIndex === this.states.length - 1) {
+            this.playPauseBtn.disabled = true;
         }
+
+        this.progressSlider.value = this.currentStateIndex;
+        this.progressSlider.max = Math.max(0, this.states.length - 1);
     }
 
     // trigger play and pause
@@ -236,7 +226,7 @@ class CubeStatePlayer {
     }
 
     // load specific position
-    goToPosition() {
+    updatePosition() {
         this.currentStateIndex = parseInt(this.progressSlider.value);
         this.updateDisplay();
         this.updateControls();
