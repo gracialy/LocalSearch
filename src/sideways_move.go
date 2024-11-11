@@ -63,6 +63,7 @@ func (sm *SidewaysMove) Plot(name string) {
 	text += fmt.Sprintf("\nFinal State Objective Value: %v", e.State[len(e.State)-1].Value)
 	text += fmt.Sprintf("\nRuntime: %v", e.GetRuntime())
 	text += fmt.Sprintf("\nMax Sideways: %v", sm.MaxSideways)
+
 	p.Title.Text = text
 	p.X.Label.Text = "Iteration"
 	p.Y.Label.Text = "Objective Function"
@@ -81,7 +82,7 @@ func (sm *SidewaysMove) Plot(name string) {
 	}
 	p.Add(line)
 
-	fileName := "img/" + name + ".png"
+	fileName := "../img/" + name + ".png"
 
 	if err := p.Save(8*vg.Inch, 8*vg.Inch, fileName); err != nil {
 		panic(err)

@@ -110,6 +110,7 @@ func (sa *SimulatedAnnealing) Plot(name string) {
 	text += fmt.Sprintf("\nFinal State Objective Value: %v", e.State[len(e.State)-1].Value)
 	text += fmt.Sprintf("\nRuntime: %v", e.GetRuntime())
 	text += fmt.Sprintf("\nStuck: %v", sa.stuck)
+
 	p.Title.Text = text
 	p.X.Label.Text = "Iteration"
 	p.Y.Label.Text = "Objective Function"
@@ -133,7 +134,7 @@ func (sa *SimulatedAnnealing) Plot(name string) {
 	}
 	p.Add(line)
 
-	fileName := "img/" + name + ".png"
+	fileName := "../img/" + name + ".png"
 
 	if err := p.Save(8*vg.Inch, 8*vg.Inch, fileName); err != nil {
 		panic(err)
@@ -167,7 +168,7 @@ func (sa *SimulatedAnnealing) BoltzmannPlot(name string) {
 	}
 	p.Add(scatter)
 
-	if err := p.Save(8*vg.Inch, 8*vg.Inch, "img/"+text+".png"); err != nil {
+	if err := p.Save(8*vg.Inch, 8*vg.Inch, "../img/"+text+".png"); err != nil {
 		panic(err)
 	}
 }

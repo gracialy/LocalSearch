@@ -28,7 +28,7 @@ func NewExperiment(c *Cube) *Experiment {
 }
 
 func (e *Experiment) Dump(name string) {
-	file, err := os.Create("txt/" + name + ".txt")
+	file, err := os.Create("../txt/" + name + ".txt")
 	if err != nil {
 		panic(err)
 	}
@@ -83,7 +83,7 @@ func (e *Experiment) Plot(name string) {
 	}
 	p.Add(line)
 
-	fileName := "img/" + name + ".png"
+	fileName := "../img/" + name + ".png"
 
 	if err := p.Save(8*vg.Inch, 8*vg.Inch, fileName); err != nil {
 		panic(err)

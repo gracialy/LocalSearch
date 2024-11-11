@@ -79,7 +79,7 @@ func (rr_sm *RR_sm) Plot(name string) {
 	}
 	p.Add(line)
 
-	fileName := "img/" + name + ".png"
+	fileName := "../img/" + name + ".png"
 
 	if err := p.Save(8*vg.Inch, 8*vg.Inch, fileName); err != nil {
 		panic(err)
@@ -120,13 +120,13 @@ func (rr_sm *RR_sm) IterationPlot(name string) {
 	// scatter.GlyphStyle.Shape = draw.CircleGlyph{}
 	// p.Add(scatter)
 
-	if err := p.Save(8*vg.Inch, 8*vg.Inch, "img/"+text+".png"); err != nil {
+	if err := p.Save(8*vg.Inch, 8*vg.Inch, "../img/"+text+".png"); err != nil {
 		panic(err)
 	}
 }
 
 func (rr_sm *RR_sm) Dump(name string) {
-	file, err := os.Create("txt/" + name + ".txt")
+	file, err := os.Create("../txt/" + name + ".txt")
 	if err != nil {
 		panic(err)
 	}

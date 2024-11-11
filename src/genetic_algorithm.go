@@ -420,7 +420,7 @@ func (ga *GeneticAlgorithm) Plot(name string) {
 	p.Legend.Add("Best", line)
 	p.Legend.Add("Average", avgLine)
 
-	fileName := "img/" + name + ".png"
+	fileName := "../img/" + name + ".png"
 
 	if err := p.Save(8*vg.Inch, 8*vg.Inch, fileName); err != nil {
 		panic(err)
