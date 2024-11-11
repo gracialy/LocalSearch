@@ -22,13 +22,29 @@ Institut Teknologi Bandung
 
 ## How to Use (Run)
 - Clone this repository
-```git clone https://github.com/gracialy/LocalSearch.git ```
+
+```
+git clone https://github.com/gracialy/LocalSearch.git
+```
+
 - Change directory to the clone
-```cd LocalSearch```
+
+```
+cd LocalSearch
+```
+
 - If you're having problem with GOPROXY, set (global)
-```export GOPROXY=https://goproxy.io```
+
+```
+export GOPROXY=https://goproxy.io
+```
+
 - Run Go & experiment
-```go run main.go cube.go experiment.go steepest_ascent.go sideways_move.go stochastic.go rr_sideways.go rr_steepest.go simulated_annealing.go genetic_algorithm.go```
+
+```
+go run main.go cube.go experiment.go steepest_ascent.go sideways_move.go stochastic.go rr_sideways.go rr_steepest.go simulated_annealing.go genetic_algorithm.go
+```
+
 - Open `index.html ` from your file manager
 - Upon generating any experiment dump file, upload your dump file to the web.
 ![alt text](image-1.png)
@@ -36,4 +52,6 @@ Institut Teknologi Bandung
 ## How to Use (Alternative)
 To skip the hassle, execute the binary provided
 
-```./bin/localsearch```
+```
+./bin/localsearch
+```
